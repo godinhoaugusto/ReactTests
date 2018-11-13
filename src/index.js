@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Fragment } from "react";
 import ReactDOM from "react-dom";
 import Header from "./layout/header";
 
@@ -6,12 +6,12 @@ import "./styles.css";
 
 function App() {
   return (
-    <div className="App">
-      <h1>Hello CodeSandbox</h1>
-      <h2>Start editing to see some magic happen!</h2>
-      <h2>Test React</h2>
+    <Fragment>
       <Header title="test title" />
-    </div>
+      <div className="App">
+        <h2>Test React</h2>
+      </div>
+    </Fragment>
   );
 }
 
