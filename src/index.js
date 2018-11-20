@@ -1,17 +1,21 @@
-import React, { Fragment } from "react";
+import React from "react";
 import ReactDOM from "react-dom";
-import Header from "./layout/header";
-
-import "./styles.css";
+import { BrowserRouter as Router } from "react-router-dom";
+import CssBaseline from "@material-ui/core/CssBaseline";
+import Main from "./layout/main";
+import { LoginCtxProvider } from "./state/loginManager";
+import { ThemeCtxProvider } from "./state/themeManager";
 
 function App() {
   return (
-    <Fragment>
-      <Header title="test title" />
-      <div className="App">
-        <h2>Test React</h2>
-      </div>
-    </Fragment>
+    <Router>
+      <ThemeCtxProvider>
+        <CssBaseline />
+        <LoginCtxProvider>
+          <Main />
+        </LoginCtxProvider>
+      </ThemeCtxProvider>
+    </Router>
   );
 }
 
