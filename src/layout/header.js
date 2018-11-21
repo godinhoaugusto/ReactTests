@@ -1,26 +1,22 @@
-import React, { useState, useContext } from "react";
+import React from "react";
 import PropTypes from "prop-types";
-import { withStyles } from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
 import IconButton from "@material-ui/core/IconButton";
 import MenuIcon from "@material-ui/icons/Menu";
-import { UserSettings } from "../state/userSettings";
-import { ThemeCtx } from "../state/themeManager";
 import { LoginCtx } from "../state/loginManager";
 import Drawer from "@material-ui/core/Drawer";
 
 import { SideList } from "./menu";
 
 const Header = props => {
-  const userSettings = React.useContext(UserSettings);
   let { state, dispatch } = React.useContext(LoginCtx);
-  let { theme, themeDispatch } = React.useContext(ThemeCtx);
+
   console.log("test console");
   const { title } = props;
-  const [openMenu, setOpenMenu] = useState(false);
+  const [openMenu, setOpenMenu] = React.useState(false);
 
   function openDrawer() {
     setOpenMenu(true);
@@ -35,19 +31,10 @@ const Header = props => {
     if (state.userId) {
       return (
         <React.Fragment>
-          <Typography
-            variant="h6"
-            color="secondary"
-            style={{ marginRight: 20 }}
-          >
+          <Typography variant="h6" color="secondary" style={{ marginRight: 20 }}>
             {state.userName}
           </Typography>
-          <Button
-            onClick={() => dispatch({ type: "logout" })}
-            variant="contained"
-            color="secondary"
-            style={{ textTransform: "none" }}
-          >
+          <Button onClick={() => dispatch({ type: "logout" })} variant="contained" color="secondary" style={{ textTransform: "none" }}>
             Logout
           </Button>
         </React.Fragment>
@@ -79,20 +66,15 @@ const Header = props => {
         </Toolbar>
       </AppBar>
 
-      <Drawer
-        open={openMenu}
-        onClose={closeDrawer}
-        onOpen={openDrawer}
-        // style={{ position: "absolute", height: 50 }}
-      >
-        <SideList
-          close={closeDrawer}
-          userId={state.userId}
-          userLogout={() => dispatch({ type: "logout" })}
-        />
+      <Drawer open={openMenu} onClose={closeDrawer}>
+        <SideList close={closeDrawer} userId={state.userId} userLogout={() => dispatch({ type: "logout" })} />
       </Drawer>
     </React.Fragment>
   );
+};
+
+Header.propTypes = {
+  title: PropTypes.string.isRequired
 };
 
 export default Header;

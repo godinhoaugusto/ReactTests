@@ -41,7 +41,8 @@ let initialState = {
     secondary: {
       main: brown[700]
     }
-  }
+  },
+  title: "React Tests"
 };
 
 let reducer = (state, action) => {
@@ -69,7 +70,11 @@ let reducer = (state, action) => {
           }
         }
       };
-
+    case "title":
+      return {
+        ...state,
+        title: action.payload
+      };
     case "green":
       return {
         ...state,

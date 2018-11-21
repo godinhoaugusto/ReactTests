@@ -16,7 +16,7 @@ const Main = props => {
 
   return (
     <MuiThemeProvider theme={currentTheme}>
-      <Header title="React Tests" />
+      <Header title={myTheme.title} />
       <Switch>
         <Route exact path="/" component={WithLogin(Home)} />
         <Route path="/settings" component={WithLogin(Settings)} />

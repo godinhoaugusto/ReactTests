@@ -30,6 +30,7 @@ const Login = props => {
   const { classes } = props;
   let { state, dispatch } = React.useContext(LoginCtx);
   const [userName, setUserName] = useState(state.userName);
+  const [errMsg, setErrMsg] = useState(state.userName === "" ? "Please enter your user name" : "");
   if (state.userId) {
     props.history.push("/");
   }
@@ -48,14 +49,26 @@ const Login = props => {
                 id="standard-name"
                 label="User Name"
                 className={classes.commonStyle}
+                error={errMsg === "" ? false : true}
+                helperText={errMsg}
                 value={userName}
-                onChange={e => setUserName(e.target.value)}
+                onKeyPress={e => {
+                  if (e.key === "Enter" && userName !== "") {
+                    e.preventDefault();
+                    login();
+                  }
+                }}
+                onChange={e => {
+                  const auxVal = e.target.value;
+                  setUserName(auxVal);
+                  setErrMsg(auxVal === "" ? "Please enter your user name" : "");
+                }}
                 margin="normal"
                 variant="outlined"
               />
             </Grid>
             <Grid item>
-              <Button variant="contained" color="secondary" className={classes.commonStyle} onClick={login}>
+              <Button variant="contained" color="secondary" disabled={errMsg !== ""} className={classes.commonStyle} onClick={login}>
                 Login
               </Button>
             </Grid>
