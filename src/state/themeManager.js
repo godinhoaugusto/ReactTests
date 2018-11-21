@@ -9,6 +9,8 @@ import blue from "@material-ui/core/colors/blue";
 import red from "@material-ui/core/colors/red";
 import amber from "@material-ui/core/colors/amber";
 
+import store from "store";
+
 const greyColor = grey[300];
 const blueGreyColor = blueGrey[300];
 const indigoColor = indigo[300];
@@ -33,7 +35,7 @@ const ThemeColors = [
 
 const ThemeCtx = React.createContext();
 
-let initialState = {
+let initialState = store.get("theme") || {
   palette: {
     primary: {
       main: brown[300]

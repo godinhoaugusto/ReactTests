@@ -12,13 +12,28 @@ import ColorPicker from "rc-color-picker";
 import { ThemeColors } from "../../state/themeManager";
 import { ThemeCtx } from "../../state/themeManager";
 
+import store from "store";
+
 const Settings = props => {
   let { myTheme, themeDispatch } = React.useContext(ThemeCtx);
   const [title, setTitle] = React.useState(myTheme.title);
-  console.log("Theme", myTheme);
+
+  const [changed, setChanged] = React.useState(false);
+  const saveChanges = () => {
+    store.set("theme", myTheme);
+    setChanged(false);
+  };
+
   return (
     <Grid container style={{ flexGrow: 1, padding: 5 }}>
       <Grid item xs={12} style={{ flexGrow: 1 }}>
+        <div>
+          {changed ? (
+            <Button onClick={saveChanges} variant="contained" color="secondary" style={{ textTransform: "none" }}>
+              Save Changes
+            </Button>
+          ) : null}
+        </div>
         <Paper style={{ width: "100%", padding: 15, marginTop: 10 }}>
           <Typography variant="subtitle1" color="secondary" style={{ flexGrow: 1 }}>
             General
@@ -33,6 +48,7 @@ const Settings = props => {
                 onChange={e => {
                   themeDispatch({ type: "title", payload: e.target.value });
                   setTitle(e.target.value);
+                  setChanged(true);
                 }}
                 margin="normal"
                 variant="outlined"
@@ -51,6 +67,7 @@ const Settings = props => {
                 color={myTheme.palette.primary.main || "#232334"}
                 onChange={obj => {
                   themeDispatch({ type: "primary", payload: obj.color });
+                  setChanged(true);
                 }}
                 mode="HSB"
               >
@@ -64,6 +81,7 @@ const Settings = props => {
                 onChange={obj => {
                   console.log(obj);
                   themeDispatch({ type: "secondary", payload: obj.color });
+                  setChanged(true);
                 }}
                 mode="HSB"
               >
@@ -85,6 +103,7 @@ const Settings = props => {
                   mini="true"
                   onClick={() => {
                     themeDispatch({ type: color.name });
+                    setChanged(true);
                   }}
                   style={{ backgroundColor: color.color }}
                 >

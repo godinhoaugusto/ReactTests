@@ -37,7 +37,7 @@ const Login = props => {
 
   const login = () => {
     dispatch({ type: "login", payload: userName });
-    props.history.go();
+    props.history.push(props.location.pathname);
   };
   return (
     <Grid container justify="center" alignItems="center" className={classes.root}>
