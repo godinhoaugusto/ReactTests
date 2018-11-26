@@ -113,6 +113,29 @@ const Settings = props => {
             ))}
           </Grid>
         </Paper>
+        <Paper style={{ width: "100%", padding: 15, marginTop: 10 }}>
+          <Typography variant="subtitle1" color="secondary" style={{ flexGrow: 1 }}>
+            Languages
+          </Typography>
+
+          <Grid container spacing={8} alignContent="space-around" justify="space-around" style={{ flexGrow: 1, padding: 5 }}>
+            {ThemeColors.map((color, idx) => (
+              <Grid item key={idx}>
+                <Button
+                  variant="fab"
+                  mini="true"
+                  onClick={() => {
+                    themeDispatch({ type: color.name });
+                    setChanged(true);
+                  }}
+                  style={{ backgroundColor: color.color }}
+                >
+                  {" "}
+                </Button>
+              </Grid>
+            ))}
+          </Grid>
+        </Paper>
       </Grid>
     </Grid>
   );

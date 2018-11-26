@@ -1,5 +1,4 @@
 import React from "react";
-import { Redirect } from "react-router";
 import Login from "../pages/login/login";
 
 let LoginCtx = React.createContext();
@@ -39,9 +38,9 @@ function WithLogin(Component) {
   return state.userId ? Component : Login;
 }
 
-function Logout(props) {
+function Logout() {
   console.log(LoginCtxConsumer);
-  const { state, dispatch } = React.useContext(LoginCtx);
+  const { dispatch } = React.useContext(LoginCtx);
   dispatch({ type: "logout" });
   return null;
 }

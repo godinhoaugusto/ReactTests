@@ -6,7 +6,7 @@ import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
 import IconButton from "@material-ui/core/IconButton";
 import MenuIcon from "@material-ui/icons/Menu";
-import { LoginCtx } from "../state/loginManager";
+import { LoginCtx, Logout } from "../state/loginManager";
 import Drawer from "@material-ui/core/Drawer";
 
 import { SideList } from "./menu";
@@ -20,21 +20,28 @@ const Header = props => {
 
   function openDrawer() {
     setOpenMenu(true);
-    // alert("abriu");
   }
   function closeDrawer() {
     setOpenMenu(false);
-    // alert("abriu");
   }
 
   function renderLogout() {
     if (state.userId) {
       return (
         <React.Fragment>
-          <Typography variant="h6" color="secondary" style={{ marginRight: 20 }}>
+          <Typography
+            variant="h6"
+            color="secondary"
+            style={{ marginRight: 20 }}
+          >
             {state.userName}
           </Typography>
-          <Button onClick={() => dispatch({ type: "logout" })} variant="contained" color="secondary" style={{ textTransform: "none" }}>
+          <Button
+            onClick={() => dispatch({ type: "logout" })}
+            variant="contained"
+            color="secondary"
+            style={{ textTransform: "none" }}
+          >
             Logout
           </Button>
         </React.Fragment>
@@ -67,7 +74,11 @@ const Header = props => {
       </AppBar>
 
       <Drawer open={openMenu} onClose={closeDrawer}>
-        <SideList close={closeDrawer} userId={state.userId} userLogout={() => dispatch({ type: "logout" })} />
+        <SideList
+          close={closeDrawer}
+          userId={state.userId}
+          userLogout={() => dispatch({ type: "logout" })}
+        />
       </Drawer>
     </React.Fragment>
   );
