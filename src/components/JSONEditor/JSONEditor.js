@@ -48,6 +48,19 @@ export default class JSONEditor extends React.Component {
     if (this.props.onChange) this.props.onChange(key, value, parent, this.state.data.root);
   }
 
+  deleteKey(key, parent, e) {
+    e.preventDefault();
+    e.stopPropagation();
+    e.persist();
+    console.log(e);
+    console.log("key : ", key);
+    console.log("parent : ", parent);
+    console.log("event : ", e);
+    console.log("event1 : ");
+
+    //
+  }
+
   castToType(value, type) {
     switch (type) {
       case "number":
@@ -129,6 +142,7 @@ export default class JSONEditor extends React.Component {
           label={label}
           type="text"
           onChange={this.dataChanged.bind(this, currentKey, parent, "text")}
+          deleteKey={this.deleteKey.bind(this, currentKey, parent)}
           value={data}
         />
       );
@@ -180,24 +194,14 @@ const Input = props => {
 };
 
 const TextArea = props => {
-  let { marginLeft, marginBottom, label, value, type, onChange } = props;
+  let { marginLeft, marginBottom, label, value, type, onChange, deleteKey } = props;
   let style = merge({ marginLeft, marginBottom }, styles.row);
-
-  function autosize(e) {
-    var el = e.target;
-    setTimeout(function() {
-      el.style.cssText = "height:auto;";
-      // for box-sizing other than "content-box" use:
-      // el.style.cssText = '-moz-box-sizing:content-box';
-      //el.style.cssText = "height:" + el.scrollHeight + "px";
-      styles.textarea = { ...styles.textarea, height: `${el.scrollHeight}px` };
-    }, 0);
-    onChange(e);
-  }
 
   return (
     <div style={style}>
-      <Label value={label} marginLeft={0} />
+      <ButtonDelete deleteKey={deleteKey} />
+
+      <Label value={label} marginLeft={5} />
       <div style={styles.value}>
         <Textarea style={styles.textarea} onChange={onChange} value={value} />
       </div>
@@ -235,6 +239,15 @@ const ParentLabel = props => {
     <div style={style}>
       <div>{value}</div>
       <div style={{ marginLeft: 5 }}>{getCollapseIcon(marginLeft, currentKey)}</div>
+    </div>
+  );
+};
+
+const ButtonDelete = props => {
+  const { deleteKey } = props;
+  return (
+    <div>
+      <button onClick={deleteKey}>-</button>
     </div>
   );
 };
