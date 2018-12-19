@@ -13,7 +13,8 @@ const TestInput = props => {
 const Home = props => {
   return (
     <React.Fragment>
-      <TestInput text="Hello123" />
+
+      <TestInput text="Hello432" />
     </React.Fragment>
   );
 };
