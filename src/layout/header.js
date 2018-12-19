@@ -60,7 +60,6 @@ const Header = props => {
           <Typography variant="h6" color="inherit" style={{ flexGrow: 1 }}>
             {title}
           </Typography>
-          <SelectLanguage />
 
           {renderLogout()}
         </Toolbar>
