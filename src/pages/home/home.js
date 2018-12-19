@@ -1,7 +1,20 @@
 import React from "react";
-import ObjEditor from "../../components/objectEdit";
+
+const TestInput = props => {
+  const [state, changeState] = React.useState(props.text);
+  return (
+    <div style={{ margin: 20 }}>
+      <label>{state}</label> <br />
+      <input type="text" value={state} onChange={e => changeState(e.target.value)} />
+    </div>
+  );
+};
 
 const Home = props => {
-  return <ObjEditor />;
+  return (
+    <React.Fragment>
+      <TestInput text="Hello" />
+    </React.Fragment>
+  );
 };
 export default Home;

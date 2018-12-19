@@ -1,32 +1,67 @@
 import React from "react";
 import { JSONEditor } from "../JSONEditor";
+import CreateKeyDialog from "./createKeyDialog";
+import ConfirmDlg from "../dialogs/confirm";
 import "./styles.css";
 
+let currentKey = {};
+
 const ObjEditor = props => {
+  const [openEditor, setOpenEditor] = React.useState(false);
+  const [openConfirm, setOpenConfirm] = React.useState(false);
+
   const onJsonChange = (key, value, parent, data) => {
     console.log(key, value, parent, data);
   };
+  const deleteKey = (key, parent, data) => {
+    currentKey = { key, parent, data };
+    setOpenConfirm(true);
+    console.log(key, parent, data);
+  };
+  const addKey = (key, parent, data) => {
+    //console.log(key, parent, data);
+
+    currentKey = { key, parent };
+    console.log(currentKey);
+    setOpenEditor(true);
+
+    // parent[key]["new key"] = "";
+  };
+
+  const confirm = res => {
+    if (res) {
+      let { key, parent } = currentKey;
+      delete parent[key];
+    }
+    setOpenConfirm(false);
+    currentKey = {};
+  };
+  const closeEditor = res => {
+    setOpenEditor(false);
+
+    let { key, parent } = currentKey;
+    let value = null;
+    if (res != null) {
+      console.log(res);
+      if (res.value == "{}") {
+        value = {};
+      } else if (res.value == "{}") {
+        value = [];
+      } else {
+        value = res.value;
+      }
+      parent[key][res.key] = value;
+    }
+    currentKey = {};
+    //console.log(currentKey);
+  };
   return (
-    <JSONEditor
-      data={{
-        en: {
-          translations: {
-            "To get started, edit <1>src/App.js</1> and save to reload.": "To get started, edit <1>src/App.js</1> and save to reload.",
-            "Welcome to React": "Welcome to React and react-i18next"
-          }
-        },
-        de: {
-          translations: {
-            "To get started, edit <1>src/App.js</1> and save to reload.": "Starte in dem du, <1>src/App.js</1> editierst und speicherst.",
-            "Welcome to React": "Willkommen bei React und react-i18next"
-          }
-        }
-      }}
-      collapsible
-      onChange={onJsonChange}
-      view="dual"
-    />
+    <React.Fragment>
+      <JSONEditor data={props.obj} collapsible cloneData={false} deleteKey={deleteKey} addKey={addKey} onChange={onJsonChange} />
+      <CreateKeyDialog open={openEditor} onCloseEditor={closeEditor} />
+      {openConfirm && <ConfirmDlg title="Warning!" contentText="Delete selected key?" confirm={confirm} />}
+    </React.Fragment>
   );
 };
 
-export default ObjEditor;
+export default React.memo(ObjEditor);

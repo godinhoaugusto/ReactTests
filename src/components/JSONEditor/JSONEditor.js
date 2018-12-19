@@ -7,7 +7,7 @@ import Textarea from "react-textarea-autosize";
 export default class JSONEditor extends React.Component {
   static defaultProps = {
     data: {}, //data to edit
-    marginLeftStep: 10, //indentation step for nested objects
+    marginLeftStep: 20, //indentation step for nested objects
     marginBottom: 3, //margin bottom of nodes
     collapsible: true, //whether nodes are collapsible or not
     //this prevents modifying the data you passed in however cloning is expensive especially for large objects
@@ -52,12 +52,18 @@ export default class JSONEditor extends React.Component {
     e.preventDefault();
     e.stopPropagation();
     e.persist();
-    console.log(e);
-    console.log("key : ", key);
-    console.log("parent : ", parent);
-    console.log("event : ", e);
-    console.log("event1 : ");
+    //delete parent[key];
+    if (this.props.deleteKey) this.props.deleteKey(key, parent, this.state.data.root);
+    this.setState(this.state.data);
+    //
+  }
+  addKey(key, parent, e) {
+    e.preventDefault();
+    e.stopPropagation();
+    e.persist();
 
+    if (this.props.addKey) this.props.addKey(key, parent, this.state.data.root);
+    this.setState(this.state.data);
     //
   }
 
@@ -112,6 +118,7 @@ export default class JSONEditor extends React.Component {
             marginLeft={marginLeft}
             currentKey={currentKey}
             getCollapseIcon={this.getCollapseIcon.bind(this)}
+            addKey={this.props.addKey ? this.addKey.bind(this, currentKey, parent) : null}
           />
         );
       }
@@ -142,7 +149,7 @@ export default class JSONEditor extends React.Component {
           label={label}
           type="text"
           onChange={this.dataChanged.bind(this, currentKey, parent, "text")}
-          deleteKey={this.deleteKey.bind(this, currentKey, parent)}
+          deleteKey={this.props.deleteKey ? this.deleteKey.bind(this, currentKey, parent) : null}
           value={data}
         />
       );
@@ -199,9 +206,9 @@ const TextArea = props => {
 
   return (
     <div style={style}>
-      <ButtonDelete deleteKey={deleteKey} />
+      {deleteKey ? <ButtonDelete deleteKey={deleteKey} /> : null}
 
-      <Label value={label} marginLeft={5} />
+      <Label value={label} marginLeft={0} />
       <div style={styles.value}>
         <Textarea style={styles.textarea} onChange={onChange} value={value} />
       </div>
@@ -233,10 +240,11 @@ const Label = props => {
 };
 
 const ParentLabel = props => {
-  let { marginLeft, value, currentKey, getCollapseIcon } = props;
+  let { marginLeft, value, currentKey, getCollapseIcon, addKey } = props;
   let style = merge({ marginLeft: marginLeft, display: "flex" }, styles.label);
   return (
     <div style={style}>
+      {addKey ? <ButtonAdd addKey={addKey} /> : null}
       <div>{value}</div>
       <div style={{ marginLeft: 5 }}>{getCollapseIcon(marginLeft, currentKey)}</div>
     </div>
@@ -246,8 +254,16 @@ const ParentLabel = props => {
 const ButtonDelete = props => {
   const { deleteKey } = props;
   return (
-    <div>
+    <div style={{ marginRight: 10 }}>
       <button onClick={deleteKey}>-</button>
+    </div>
+  );
+};
+const ButtonAdd = props => {
+  const { addKey } = props;
+  return (
+    <div style={{ marginRight: 10 }}>
+      <button onClick={addKey}>+</button>
     </div>
   );
 };
@@ -272,7 +288,7 @@ const styles = {
     margin: 10
   },
   label: {
-    color: "#c00",
+    color: "#000",
     marginTop: 4,
     width: "50%"
   },
@@ -286,7 +302,8 @@ const styles = {
   },
   root: {
     fontSize: 12,
-    fontFamily: "monospace"
+    fontFamily: "monospace",
+    padding: 10
   },
   withChildrenLabel: {
     color: "#a52a2a"

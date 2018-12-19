@@ -12,7 +12,12 @@ import { ApiRoutes } from "../api/api";
 
 const Main = props => {
   let { myTheme } = React.useContext(ThemeCtx);
-  let currentTheme = createMuiTheme(myTheme);
+  let currentTheme = createMuiTheme({
+    typography: {
+      useNextVariants: true
+    },
+    ...myTheme
+  });
 
   return (
     <MuiThemeProvider theme={currentTheme}>
