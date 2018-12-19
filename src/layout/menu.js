@@ -10,6 +10,7 @@ import ListItemText from "@material-ui/core/ListItemText";
 import LoginIcon from "@material-ui/icons/AccountBox";
 import HomeIcon from "@material-ui/icons/Home";
 import SettingsIcon from "@material-ui/icons/Settings";
+import ExitToAppIcon from "@material-ui/icons/ExitToApp";
 
 import { Logout } from "../state/loginManager";
 
@@ -41,7 +42,7 @@ const SideList = props => {
               }}
             >
               <ListItemIcon>
-                <SettingsIcon />
+                <ExitToAppIcon />
               </ListItemIcon>
               <ListItemText primary="Logout" />
             </ListItem>
